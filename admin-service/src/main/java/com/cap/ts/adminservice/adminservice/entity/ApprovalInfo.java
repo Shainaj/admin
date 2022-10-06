@@ -6,21 +6,24 @@ import java.util.Date;
 
 @Entity
 @Table(name = "ApprovalInfo")
-public class ApprovalInfo  implements Serializable {
+public class ApprovalInfo implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ApprovalId", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int approvalId;
 
     @Column(name = "UserId", nullable = false)
     private String userId;
 
-    @Column(name = "LeaveId", nullable = false )
-    private Integer leaveId;
+    @Column(name = "IdTobeApproved", nullable = false )
+    private Integer idTobeApproved;
 
     @Column(name = "ApprovalStatus", nullable = false)
     private String approvalStatus;
+
+    @Column(name = "Comments", nullable = false)
+    private String comments;
 
     @Column(name = "ApprovedTimeStamp", nullable = false)
     private Date approvedTimeStamp;
@@ -37,12 +40,17 @@ public class ApprovalInfo  implements Serializable {
         return userId;
     }
 
-    public Integer getLeaveId() {
-        return leaveId;
+
+    public Integer getIdTobeApproved() {
+        return idTobeApproved;
     }
 
     public String getApprovalStatus() {
         return approvalStatus;
+    }
+
+    public String getComments() {
+        return comments;
     }
 
     public Date getApprovedTimeStamp() {

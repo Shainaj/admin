@@ -4,6 +4,7 @@ CREATE TABLE UserInfo(
 	UserName VARCHAR(100) NOT NULL,
 	UserEmailId VARCHAR(100) NULL,
 	Role VARCHAR(500) NULL,
+	Supervisor VARCHAR(20) NULL,
 	PRIMARY KEY (UserId)
 );
 
@@ -20,8 +21,9 @@ CREATE TABLE LeaveInfo(
 	UserId VARCHAR(20) NOT NULL,
 	LeaveType VARCHAR(20) NOT NULL,
 	NoOfDays VARCHAR(20) NOT NULL,
-	LeaveOnDate DATE NOT NULL,
-	leaveAppliedTimeStamp DATETIME DEFAULT CURRENT_TIMESTAMP(),
+	LeaveFrom DATE NOT NULL,
+	LeaveTo DATE NOT NULL,
+	LeaveReason varchar(255) NOT NULL,
 	PRIMARY KEY (LeaveId),
 	FOREIGN KEY (UserId) REFERENCES UserInfo(UserId)
 );
@@ -29,9 +31,22 @@ CREATE TABLE LeaveInfo(
 CREATE TABLE ApprovalInfo(
     ApprovalId BIGINT NOT NULL AUTO_INCREMENT,
 	UserId VARCHAR(30) NULL,
-	LeaveId BIGINT NOT NULL,
+	IdTobeApproved BIGINT NOT NULL,
 	ApprovalStatus VARCHAR(50) NULL,
+	Comments VARCHAR(20) NOT NULL,
 	ApprovedTimeStamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (ApprovalId),
-	FOREIGN KEY (LeaveId) REFERENCES LeaveInfo(LeaveId)
+	PRIMARY KEY (ApprovalId)
+);
+
+
+
+CREATE TABLE TimeCardInfo(
+    TimecardId BIGINT NOT NULL AUTO_INCREMENT,
+    UserId VARCHAR(20) NOT NULL,
+    ProjectId BIGINT NOT NULL,
+    ProjectName VARCHAR(20) NOT NULL,
+    WeekEnding DATE NOT NULL,
+    Comments varchar(255)  NULL,
+    PRIMARY KEY (TimecardId),
+    FOREIGN KEY (UserId) REFERENCES UserInfo(UserId)
 );

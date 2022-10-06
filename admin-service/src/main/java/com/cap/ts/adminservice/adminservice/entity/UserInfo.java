@@ -11,10 +11,10 @@ import java.io.Serializable;
 public class UserInfo implements Serializable {
 
     @Id
-    @Column(name = "UserId")
+    @Column(name = "UserId", nullable = false)
     private String userId;
 
-    @Column(name = "UserName")
+    @Column(name = "UserName", nullable = false)
     private String userName;
 
     @Column(name = "UserEmailId")
@@ -22,6 +22,9 @@ public class UserInfo implements Serializable {
 
     @Column(name = "Role")
     private String role;
+
+    @Column(name = "Supervisor")
+    private String supervisor;
 
     UserInfo(){
 
@@ -41,5 +44,9 @@ public class UserInfo implements Serializable {
 
     public String getRole() {
         return role;
+    }
+
+    public String getSupervisor() {
+        return supervisor;
     }
 }

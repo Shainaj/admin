@@ -1,9 +1,6 @@
 package com.cap.ts.adminservice.adminservice.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -13,6 +10,7 @@ public class LeaveInfo implements Serializable {
 
     @Id
     @Column(name = "LeaveId", nullable = false )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer leaveId;
 
     @Column(name = "UserId", nullable = false)
@@ -24,14 +22,16 @@ public class LeaveInfo implements Serializable {
     @Column(name = "NoOfDays", nullable = false)
     private String noOfDays;
 
-    @Column(name = "LeaveOnDate",nullable = false)
-    private Date leaveOnDate;
+    @Column(name = "LeaveFrom",nullable = false)
+    private Date leaveFrom;
 
-    @Column(name = "leaveAppliedTimeStamp", nullable = false)
-    private Date leaveAppliedTimeStamp;
+    @Column(name = "LeaveTo",nullable = false)
+    private Date leaveTo;
+
+    @Column(name = "LeaveReason", nullable = false)
+    private String leaveReason;
 
    LeaveInfo(){
-
    }
 
     public Integer getLeaveId() {
@@ -50,11 +50,15 @@ public class LeaveInfo implements Serializable {
         return noOfDays;
     }
 
-    public Date getLeaveOnDate() {
-        return leaveOnDate;
+    public Date getLeaveFrom() {
+        return leaveFrom;
     }
 
-    public Date getLeaveAppliedTimeStamp() {
-        return leaveAppliedTimeStamp;
+    public Date getLeaveTo() {
+        return leaveTo;
+    }
+
+    public String getLeaveReason() {
+        return leaveReason;
     }
 }

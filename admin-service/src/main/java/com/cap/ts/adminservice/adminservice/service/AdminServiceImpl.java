@@ -1,9 +1,8 @@
 package com.cap.ts.adminservice.adminservice.service;
 
-import com.cap.ts.adminservice.adminservice.dto.LeaveResponseDto;
-import com.cap.ts.adminservice.adminservice.dto.LoginRequestDto;
-import com.cap.ts.adminservice.adminservice.dto.LoginResponseDto;
+import com.cap.ts.adminservice.adminservice.dto.*;
 import com.cap.ts.adminservice.adminservice.entity.ApprovalInfo;
+import com.cap.ts.adminservice.adminservice.entity.UserInfo;
 import com.cap.ts.adminservice.adminservice.exception.AdminServiceException;
 import com.cap.ts.adminservice.adminservice.projection.LeaveDetailsProjection;
 import com.cap.ts.adminservice.adminservice.projection.UserProjection;
@@ -81,46 +80,60 @@ public class AdminServiceImpl implements  AdminService{
 
     }
 
+
     @Override
-    public LeaveResponseDto getLeaveDetails(Integer leaveId) {
-        LeaveResponseDto leaveResponseDto = new LeaveResponseDto();
+    public UserResponseDto getUserData(String userId){
+        UserResponseDto userResponseDto = new UserResponseDto();
+
         try{
-            if(leaveId!=null){
-                final LeaveDetailsProjection leaveDetailsProjection = leaveInfoRepository.fetchLeaveDetailsByLeaveId(leaveId);
-                log.info("Leave details {} ", leaveDetailsProjection.getUserId());
-                leaveResponseDto.setResponse("Successful");
-                leaveResponseDto.setResponseCode(200);
-                leaveResponseDto.setLeaveDetailsProjection(leaveDetailsProjection);
-            }else{
+            userResponseDto.setResponseCode(200);
+            String message = "Successful";
+            Optional<UserInfo> userProjection;
+                if(userId!=null && !userId.isBlank()){
+                    log.info("Fetch  user details {} ", userId);
+                    userProjection = userInfoRepository.findById(userId);
+                    log.info("User details {} ", userProjection.isPresent());
+                    userResponseDto.setResponse(message);
+                    userResponseDto.setUserProjection(userProjection);
+                    }else {
+                    userResponseDto.setResponseCode(400);
+                    userResponseDto.setResponse("Bad Request");
+                    userResponseDto.setUserProjection(null);
 
-                leaveResponseDto.setResponseCode(400);
-                leaveResponseDto.setResponse("Bad Request");
-                leaveResponseDto.setLeaveDetailsProjection(null);
+                    }
 
-            }
         }catch (Exception e){
-            log.error("Exception while fetching leave details {}", e.getMessage(), e);
-            leaveResponseDto.setResponseCode(500);
+            log.error("Exception while validating login {}", e.getMessage(), e);
+            userResponseDto.setResponseCode(500);
             String message = e.getMessage().contains("SQL")?"Server Down":"Unknown Error";
-            leaveResponseDto.setResponse(message);
+            userResponseDto.setResponse(message);
         }
-        return leaveResponseDto;
+
+        return userResponseDto;
+
     }
 
+
+
     @Override
-    public Map<String, Integer> updateLeaveStatus(ApprovalInfo approvalInfo) {
-        Map<String, Integer> map = new HashMap<>();
+    public ApprovalResponseDto updateLeaveStatus(ApprovalInfo approvalInfo) {
+       ApprovalResponseDto approvalResponseDto = new ApprovalResponseDto();
         try {
-            if(approvalInfo!=null){
+            if(approvalInfo !=null){
                 final int count = approvalInfoDao.updateLeaveStatus(approvalInfo);
-                map.put("No of leaves approved", count);
-                map.put("Leave Id approved", approvalInfo.getLeaveId());
+                approvalResponseDto.setResponse("Successful");
+                approvalResponseDto.setResponseCode(200);
+                approvalResponseDto.setCount(count);
+                approvalResponseDto.setApprovedDetails("No of leaves or timecard approved");
+                approvalResponseDto.setId(approvalInfo.getIdTobeApproved());
             }
 
         }catch (Exception e){
             log.error("Error occurred while updating leave status {}", e.getMessage(),e);
-            map.put(e.getMessage()+"Unknown error ", 0);
+            approvalResponseDto.setResponse(e.getMessage()+"Unknown error ");
+            approvalResponseDto.setId(approvalInfo.getIdTobeApproved());
+            approvalResponseDto.setResponseCode(400);
         }
-        return  map;
+        return  approvalResponseDto;
     }
 }

@@ -5,16 +5,20 @@ import java.util.Date;
 public interface LeaveDetailsProjection {
 
     public Integer getLeaveId();
+
     public String getUserId();
 
     public String getLeaveType();
 
-    public String getNoOfDays() ;
+    public String getNoOfDays();
 
-    public Date getLeaveOnDate() ;
+    public Date getLeaveFrom();
 
-    public Date getLeaveAppliedTimeStamp();
+    public Date getLeaveTo();
 
-    public String getUserName();
+    public String getLeaveReason();
+
+    public  String getUserName();
+
 
 }

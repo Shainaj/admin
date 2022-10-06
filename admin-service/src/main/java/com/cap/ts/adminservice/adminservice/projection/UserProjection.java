@@ -13,6 +13,6 @@ public interface UserProjection {
 
     public String getUserRole();
 
-    public Date getLastLoginTimeStamp();
+    public String getSupervisor();
 
 }
